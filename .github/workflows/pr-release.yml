@@ -1,8 +1,8 @@
 name: Test Release
 on:
   push:
-    branches:
-      - develop
+    tags:
+      - '*'
 
 jobs:
   release:
@@ -24,4 +24,4 @@ jobs:
 
       - run: git reset --hard
 
-      - run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} task release:prod --snapshot
+      - run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} task release:prod
