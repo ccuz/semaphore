@@ -18,10 +18,10 @@ type AnsiblePlaybook struct {
 func (p AnsiblePlaybook) makeCmd(command string, args []string, environmentVars *[]string) *exec.Cmd {
 	cmd := exec.Command(command, args...) //nolint: gas
 	cmd.Dir = p.GetFullPath()
-	// Prepend python .venv binaries to PATH allowing specific ansible version per task-template
-	cmd.PATH = fmt.Sprintf("PATH=%s/.venv/bin:%s", cmd.Dir, cmd.PATH)
 
 	cmd.Env = os.Environ()
+	// Prepend python .venv binaries to PATH allowing specific ansible version per task-template
+    cmd.Env = append(cmd.Env, fmt.Sprintf("PATH=%s/.venv/bin:%s", cmd.Dir, cmd.PATH))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("HOME=%s", util.Config.TmpPath))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("PWD=%s", cmd.Dir))
 	cmd.Env = append(cmd.Env, "PYTHONUNBUFFERED=1")
