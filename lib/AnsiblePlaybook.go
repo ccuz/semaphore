@@ -29,7 +29,7 @@ func (p AnsiblePlaybook) makeCmd(command string, args []string, environmentVars 
 	if environmentVars != nil {
 		cmd.Env = append(cmd.Env, *environmentVars...)
 	}
-	// Remove sensitive env variables from cmd process as it can be read using ansible "debug" task and "-vvv"
+	// Remove sensitive env variables from cmd process as they can be read using ansible "debug" task and "-vvv"
 	cmd.Env = append(cmd.Env, "SEMAPHORE_ACCESS_KEY_ENCRYPTION=''")
 	cmd.Env = append(cmd.Env, "SEMAPHORE_ADMIN_PASSWORD=''")
 	cmd.Env = append(cmd.Env, "SEMAPHORE_DB_USER=''")

@@ -1,8 +1,9 @@
 name: Test Release
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - develop
+      - feature/*
 
 jobs:
   release:
