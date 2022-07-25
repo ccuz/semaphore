@@ -16,13 +16,13 @@ type AnsiblePlaybook struct {
 }
 
 func (p AnsiblePlaybook) makeCmd(command string, args []string, environmentVars *[]string) *exec.Cmd {
+	commandToExec := command
 	cmdInPythonDefaultVenv := fmt.Sprintf("%s/.venv/bin/%s", p.GetFullPath(), command)
-    if _, err := os.Stat(cmdInPythonDefaultVenv); !os.IsNotExist(err) {
+	if _, err := os.Stat(cmdInPythonDefaultVenv); !os.IsNotExist(err) {
       // Run .venv/bin/command instead of the one in PATH
-      cmd := exec.Command(cmdInPythonDefaultVenv, args...) //nolint: gas
-    } else {
-      cmd := exec.Command(command, args...) //nolint: gas
+      commandToExec = cmdInPythonDefaultVenv
     }
+    cmd := exec.Command(commandToExec, args...) //nolint: gas
 	cmd.Dir = p.GetFullPath()
 
 	cmd.Env = os.Environ()
