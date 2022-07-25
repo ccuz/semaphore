@@ -25,7 +25,7 @@ func (p AnsiblePlaybook) makeCmd(command string, args []string, environmentVars 
         // Prepend python .venv binaries to PATH allowing specific ansible version per task-template
         p.Logger.Log(fmt.Sprintf("Using python venv at: %s\n", pythonDefaultVenv))
         cmd.Env = append(cmd.Env, fmt.Sprintf("VIRTUAL_ENV=%s", pythonDefaultVenv))
-        cmd.Env = append(cmd.Env, fmt.Sprintf("PATH=%s/bin:%s", python_default_venv, os.Getenv("PATH")))
+        cmd.Env = append(cmd.Env, fmt.Sprintf("PATH=%s/bin:%s", pythonDefaultVenv, os.Getenv("PATH")))
     }
 	cmd.Env = append(cmd.Env, fmt.Sprintf("HOME=%s", util.Config.TmpPath))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("PWD=%s", cmd.Dir))
