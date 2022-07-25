@@ -18,6 +18,8 @@ type AnsiblePlaybook struct {
 func (p AnsiblePlaybook) makeCmd(command string, args []string, environmentVars *[]string) *exec.Cmd {
 	cmd := exec.Command(command, args...) //nolint: gas
 	cmd.Dir = p.GetFullPath()
+	// Prepend python .venv binaries to PATH allowing specific ansible version per task-template
+	cmd.PATH = fmt.Sprintf("PATH=%s/.venv/bin:%s", cmd.Dir, cmd.PATH)
 
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env, fmt.Sprintf("HOME=%s", util.Config.TmpPath))
@@ -27,6 +29,12 @@ func (p AnsiblePlaybook) makeCmd(command string, args []string, environmentVars 
 	if environmentVars != nil {
 		cmd.Env = append(cmd.Env, *environmentVars...)
 	}
+	// Remove sensitive env variables from cmd process as it can be read using ansible "debug" task and "-vvv"
+	cmd.Env = append(cmd.Env, "SEMAPHORE_ACCESS_KEY_ENCRYPTION=''")
+	cmd.Env = append(cmd.Env, "SEMAPHORE_ADMIN_PASSWORD=''")
+	cmd.Env = append(cmd.Env, "SEMAPHORE_DB_USER=''")
+	cmd.Env = append(cmd.Env, "SEMAPHORE_DB_PASS=''")
+	cmd.Env = append(cmd.Env, "SEMAPHORE_LDAP_PASSWORD=''")
 
 	return cmd
 }
