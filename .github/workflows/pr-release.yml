@@ -23,6 +23,6 @@ jobs:
 
       - run: task deps
 
-      - run:  git reset --hard
+      - run: git reset --hard
 
-      - run: GITHUB_TOKEN=${{ secrets.GH_TOKEN }} task release:prod
+      - run: task release:prod
