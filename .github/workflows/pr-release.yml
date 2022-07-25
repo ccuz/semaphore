@@ -24,4 +24,4 @@ jobs:
 
       - run: git reset --hard
 
-      - run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} task release:prod
+      - run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} task release:prod --snapshot
