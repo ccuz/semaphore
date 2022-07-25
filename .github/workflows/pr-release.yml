@@ -1,0 +1,27 @@
+name: Test Release
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/setup-go@v3
+        with: { go-version: 1.18 }
+
+      - uses: actions/setup-node@v3
+        with: { node-version: '16' }
+
+      - run: go install github.com/go-task/task/v3/cmd/task@latest
+
+      - run: sudo apt update && sudo apt-get install rpm
+
+      - uses: actions/checkout@v3
+
+      - run: task deps
+
+      - run:  git reset --hard
+
+      - run: GITHUB_TOKEN=${{ secrets.GH_TOKEN }} task release:prod
