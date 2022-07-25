@@ -25,4 +25,4 @@ jobs:
 
       - run: git reset --hard
 
-      - run: task release:prod
+      - run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} task release:prod
